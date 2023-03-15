@@ -26,11 +26,11 @@ module.exports.deleteCardById = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
     .orFail(() => res.status(404).send({ message: 'Карточка с указанным _id не найдена' }))
     .then((user) => res.send({ data: user }))
-    .catch(() => {
+    .catch((err) => {
       if (res.headersSent) {
         return;
       }
-      res.status(500).send({ message: 'Произошла ошибка' });
+      if (err.name === 'CastError') { res.status(400).send({ message: 'Передан некорректный _id при поиске карточки' }); } else res.status(500).send({ message: 'Произошла ошибка' });
     });
 };
 
@@ -42,7 +42,8 @@ module.exports.addCardLike = (req, res) => {
       if (res.headersSent) {
         return;
       }
-      if (err.name === 'ValidationError') { res.status(400).send({ message: 'Переданы некорректные данные для постановки лайка' }); } else res.status(500).send({ message: 'Произошла ошибка' });
+      if (err.name === 'ValidationError') { res.status(400).send({ message: 'Переданы некорректные данные для постановки лайка' }); return; }
+      if (err.name === 'CastError') { res.status(400).send({ message: 'Передан некорректный _id при поиске карточки' }); } else res.status(500).send({ message: 'Произошла ошибка' });
     });
 };
 
@@ -54,6 +55,7 @@ module.exports.removeCardLike = (req, res) => {
       if (res.headersSent) {
         return;
       }
-      if (err.name === 'ValidationError') { res.status(400).send({ message: 'Переданы некорректные данные для снятии лайка' }); } else res.status(500).send({ message: 'Произошла ошибка' });
+      if (err.name === 'ValidationError') { res.status(400).send({ message: 'Переданы некорректные данные для снятии лайка' }); return; }
+      if (err.name === 'CastError') { res.status(400).send({ message: 'Передан некорректный _id при поиске карточки' }); } else res.status(500).send({ message: 'Произошла ошибка' });
     });
 };
