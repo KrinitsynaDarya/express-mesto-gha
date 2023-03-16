@@ -9,7 +9,6 @@ const {
 module.exports.createUser = (req, res) => {
   // получим из объекта запроса имя и описание пользователя
   const { name, about, avatar } = req.body;
-  // res.send({ name, about, avatar });
 
   // создадим документ на основе пришедших данных
   User.create({ name, about, avatar })
@@ -37,8 +36,8 @@ module.exports.getUsers = (req, res) => {
   // найти вообще всех
   User.find({})
     .then((users) => res.send(users))
-    .catch((err) => {
-      if (err.name === 'ValidationError') { res.status(HTTP_STATUS_BAD_REQUEST).send({ message: 'Произошла ошибка валидации' }); } else res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
+    .catch(() => {
+      res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
     });
 };
 
@@ -52,8 +51,8 @@ module.exports.updateUser = (req, res) => {
       if (res.headersSent) {
         return;
       }
-      if (err.name === 'ValidationError') { res.status(HTTP_STATUS_BAD_REQUEST).send({ message: 'Переданы некорректные данные при обновлении профиля' }); return; }
-      if (err.name === 'CastError') { res.status(HTTP_STATUS_BAD_REQUEST).send({ message: 'Передан некорректный _id при поиске пользователя' }); } else res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
+      if (err.name === 'ValidationError') { res.status(HTTP_STATUS_BAD_REQUEST).send({ message: 'Переданы некорректные данные при обновлении профиля' }); }
+      else res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
     });
 };
 
@@ -67,7 +66,6 @@ module.exports.updateUserAvatar = (req, res) => {
       if (res.headersSent) {
         return;
       }
-      if (err.name === 'ValidationError') { res.status(HTTP_STATUS_BAD_REQUEST).send({ message: 'Переданы некорректные данные при обновлении аватара' }); return; }
-      if (err.name === 'CastError') { res.status(HTTP_STATUS_BAD_REQUEST).send({ message: 'Передан некорректный _id при поиске пользователя' }); } else res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
+      if (err.name === 'ValidationError') { res.status(HTTP_STATUS_BAD_REQUEST).send({ message: 'Переданы некорректные данные при обновлении аватара' }); } else res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
     });
 };

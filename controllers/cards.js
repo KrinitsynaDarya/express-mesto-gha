@@ -47,7 +47,6 @@ module.exports.addCardLike = (req, res) => {
       if (res.headersSent) {
         return;
       }
-      if (err.name === 'ValidationError') { res.status(HTTP_STATUS_BAD_REQUEST).send({ message: 'Переданы некорректные данные для постановки лайка' }); return; }
       if (err.name === 'CastError') { res.status(HTTP_STATUS_BAD_REQUEST).send({ message: 'Передан некорректный _id при поиске карточки' }); } else res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
     });
 };
@@ -60,7 +59,6 @@ module.exports.removeCardLike = (req, res) => {
       if (res.headersSent) {
         return;
       }
-      if (err.name === 'ValidationError') { res.status(HTTP_STATUS_BAD_REQUEST).send({ message: 'Переданы некорректные данные для снятии лайка' }); return; }
       if (err.name === 'CastError') { res.status(HTTP_STATUS_BAD_REQUEST).send({ message: 'Передан некорректный _id при поиске карточки' }); } else res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
     });
 };
