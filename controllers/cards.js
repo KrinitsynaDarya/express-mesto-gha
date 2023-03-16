@@ -43,11 +43,11 @@ module.exports.addCardLike = (req, res) => {
   Card.findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: req.user._id } })
     .orFail(() => res.status(HTTP_STATUS_NOT_FOUND).send({ message: 'Передан несуществующий _id карточки' }))
     .then((user) => res.send({ data: user }))
-    .catch((err) => {
+    .catch(() => {
       if (res.headersSent) {
         return;
       }
-      if (err.name === 'CastError') { res.status(HTTP_STATUS_BAD_REQUEST).send({ message: 'Передан некорректный _id при поиске карточки' }); } else res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
+      res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
     });
 };
 
@@ -55,10 +55,10 @@ module.exports.removeCardLike = (req, res) => {
   Card.findByIdAndUpdate(req.params.cardId, { $pull: { likes: req.user._id } })
     .orFail(() => res.status(HTTP_STATUS_NOT_FOUND).send({ message: 'Передан несуществующий _id карточки' }))
     .then((user) => res.send({ data: user }))
-    .catch((err) => {
+    .catch(() => {
       if (res.headersSent) {
         return;
       }
-      if (err.name === 'CastError') { res.status(HTTP_STATUS_BAD_REQUEST).send({ message: 'Передан некорректный _id при поиске карточки' }); } else res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
+      res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
     });
 };
