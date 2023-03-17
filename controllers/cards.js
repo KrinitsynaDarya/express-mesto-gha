@@ -35,7 +35,7 @@ module.exports.deleteCardById = (req, res) => {
     .orFail()
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.name === 'DocumentNotFound') {
+      if (err.name === 'DocumentNotFoundError') {
         res.status(HTTP_STATUS_NOT_FOUND).send({ message: 'Карточка с указанным _id не найдена' });
         return;
       }
@@ -50,7 +50,7 @@ module.exports.addCardLike = (req, res) => {
     .orFail()
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.name === 'DocumentNotFound') {
+      if (err.name === 'DocumentNotFoundError') {
         res.status(HTTP_STATUS_NOT_FOUND).send({ message: 'Передан несуществующий _id карточки' });
         return;
       }
@@ -65,7 +65,7 @@ module.exports.removeCardLike = (req, res) => {
     .orFail()
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.name === 'DocumentNotFound') {
+      if (err.name === 'DocumentNotFoundError') {
         res.status(HTTP_STATUS_NOT_FOUND).send({ message: 'Передан несуществующий _id карточки' });
         return;
       }
