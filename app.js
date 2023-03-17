@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const {
   HTTP_STATUS_NOT_FOUND,
-} = require('./errors/codes');
+} = require('./utils/codes');
 // Слушаем 3000 порт
 const { PORT = 3000 } = process.env;
 
