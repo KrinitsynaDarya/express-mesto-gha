@@ -28,7 +28,7 @@ module.exports.getUserById = (req, res) => {
     .orFail()
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.name === 'DocumentNotFound') {
+      if (err.name === 'DocumentNotFoundError') {
         res.status(HTTP_STATUS_NOT_FOUND).send({ message: 'Пользователь по указанному _id не найден' });
         return;
       }
@@ -54,7 +54,7 @@ module.exports.updateUser = (req, res) => {
     .orFail()
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.name === 'DocumentNotFound') {
+      if (err.name === 'DocumentNotFoundError') {
         res.status(HTTP_STATUS_NOT_FOUND).send({ message: 'Пользователь по указанному _id не найден' });
         return;
       }
@@ -71,7 +71,7 @@ module.exports.updateUserAvatar = (req, res) => {
     .orFail()
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.name === 'DocumentNotFound') {
+      if (err.name === 'DocumentNotFoundError') {
         res.status(HTTP_STATUS_NOT_FOUND).send({ message: 'Пользователь по указанному _id не найден' });
         return;
       }
