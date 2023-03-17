@@ -51,8 +51,7 @@ module.exports.updateUser = (req, res) => {
       if (res.headersSent) {
         return;
       }
-      if (err.name === 'ValidationError') { res.status(HTTP_STATUS_BAD_REQUEST).send({ message: 'Переданы некорректные данные при обновлении профиля' }); }
-      else res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
+      if (err.name === 'ValidationError') { res.status(HTTP_STATUS_BAD_REQUEST).send({ message: 'Переданы некорректные данные при обновлении профиля' }); } else res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
     });
 };
 
