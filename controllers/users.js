@@ -25,7 +25,7 @@ module.exports.createUser = (req, res) => {
 
 module.exports.getUserById = (req, res) => {
   User.findById(req.params.userId)
-    .orFail()
+    .orFail(/* оставляем как есть */)
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
@@ -33,7 +33,9 @@ module.exports.getUserById = (req, res) => {
         return;
       }
       if (err.name === 'CastError') {
-        res.status(HTTP_STATUS_BAD_REQUEST).send({ message: 'Передан некорректный _id при поиске пользователя' });
+        res.status(HTTP_STATUS_BAD_REQUEST).send(
+          { message: 'Передан некорректный _id при поиске пользователя' },
+        );
       } else res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
     });
 };
