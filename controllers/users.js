@@ -5,11 +5,11 @@ const User = require('../models/user');
 const {
   HTTP_STATUS_CREATED,
 } = require('../utils/codes');
-const { BadRequestError } = require('../errors/bad-request-err');
-const { InternalServerError } = require('../errors/internal-server-err');
-const { NotFoundError } = require('../errors/not-found-err');
-const { UnauthorizedError } = require('../errors/unauthorized-err');
-const { ConflictError } = require('../errors/conflict-err');
+const BadRequestError = require('../errors/bad-request-err');
+const InternalServerError = require('../errors/internal-server-err');
+const NotFoundError = require('../errors/not-found-err');
+const UnauthorizedError = require('../errors/unauthorized-err');
+const ConflictError = require('../errors/conflict-err');
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;

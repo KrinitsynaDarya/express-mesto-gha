@@ -5,10 +5,10 @@ const {
   HTTP_STATUS_CREATED,
 } = require('../utils/codes');
 
-const { BadRequestError } = require('../errors/bad-request-err');
-const { ForbiddenError } = require('../errors/forbidden-err');
-const { InternalServerError } = require('../errors/internal-server-err');
-const { NotFoundError } = require('../errors/not-found-err');
+const BadRequestError = require('../errors/bad-request-err');
+const ForbiddenError = require('../errors/forbidden-err');
+const InternalServerError = require('../errors/internal-server-err');
+const NotFoundError = require('../errors/not-found-err');
 
 module.exports.createCardOld = (req, res, next) => {
   // получим из объекта запроса имя и ссылку на карточку
@@ -73,7 +73,7 @@ module.exports.deleteCardById = (req, res, next) => {
         // res.status(HTTP_STATUS_FORBIDDEN)
         // .send({ message: 'Карточка с указанным _id не принадлежит текущему пользователю' });
         next(new ForbiddenError('Карточка с указанным _id не принадлежит текущему пользователю'));
-        return;
+        // return;
       }
       card.remove()
         .then(() => res.send({ data: card }));
@@ -83,7 +83,7 @@ module.exports.deleteCardById = (req, res, next) => {
         // res.status(HTTP_STATUS_NOT_FOUND)
         // .send({ message: 'Карточка с указанным _id не найдена' });
         next(new NotFoundError('Карточка с указанным _id не найдена'));
-        return;
+        // return;
       }
       if (err.name === 'CastError') {
         // res.status(HTTP_STATUS_BAD_REQUEST)
@@ -104,7 +104,7 @@ module.exports.addCardLike = (req, res, next) => {
         next(new NotFoundError('Передан несуществующий _id карточки'));
         // res.status(HTTP_STATUS_NOT_FOUND)
         // .send({ message: 'Передан несуществующий _id карточки' });
-        return;
+        // return;
       }
       if (err.name === 'CastError') {
         // res.status(HTTP_STATUS_BAD_REQUEST)
