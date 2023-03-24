@@ -44,7 +44,7 @@ module.exports.createUser = (req, res, next) => {
       name, about, avatar, email, password: hash,
     }))
   // вернём записанные в базу данные
-    .then((user) => res.status(HTTP_STATUS_CREATED).send({ data: user }))
+    .then((user) => res.status(HTTP_STATUS_CREATED).send({ data: user.toJSON() }))
   // данные не записались, вернём ошибку
     .catch((err) => {
       if (err.code === 11000) {
