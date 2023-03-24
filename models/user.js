@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
       validator(v) {
         return regExUrl.test(v);
       },
-      message: (props) => `${props.value} is not a valid phone number!`,
+      message: 'Невалидный URL',
     },
   },
   email: {
@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (value) => validator.isEmail(value),
-      message: 'Invalid email',
+      message: 'Невалидный email',
     },
   },
   password: {
