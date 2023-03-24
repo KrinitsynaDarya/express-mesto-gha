@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs'); // импортируем bcrypt
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = process.env;
+const { JWT_SECRET } = process.env;
 // импортируем модель
 const User = require('../models/user');
 const {
