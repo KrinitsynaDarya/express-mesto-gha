@@ -3,7 +3,7 @@ const Card = require('../models/card');
 
 const {
   HTTP_STATUS_CREATED,
-} = require('../utils/codes');
+} = require('../utils/constants');
 
 const BadRequestError = require('../errors/bad-request-err');
 const ForbiddenError = require('../errors/forbidden-err');

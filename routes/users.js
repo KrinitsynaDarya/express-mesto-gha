@@ -1,5 +1,6 @@
 const router = require('express').Router(); // создали роутер
 const { celebrate, Joi } = require('celebrate');
+const { regExUrl } = require('../utils/constants');
 
 // контроллеры и роуты для пользователей
 const {
@@ -27,7 +28,7 @@ router.patch('/me', celebrate({
 }), updateUser); // обновляет профиль
 router.patch('/me/avatar', celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().pattern(/https?:\/\/(www.)?[a-z0-9][a-z0-9-]+\.[a-z]{2,6}[0-9a-z\-._~:/[\]@!$'()*+,;=]*#?$/),
+    avatar: Joi.string().pattern(regExUrl),
   }),
 }), updateUserAvatar); // обновляет аватар
 

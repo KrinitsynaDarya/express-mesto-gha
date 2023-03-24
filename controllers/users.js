@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const {
   HTTP_STATUS_CREATED,
-} = require('../utils/codes');
+} = require('../utils/constants');
 const BadRequestError = require('../errors/bad-request-err');
 const InternalServerError = require('../errors/internal-server-err');
 const NotFoundError = require('../errors/not-found-err');

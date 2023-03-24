@@ -1,5 +1,6 @@
 const router = require('express').Router(); // создали роутер
 const { celebrate, Joi } = require('celebrate');
+const { regExUrl } = require('../utils/constants');
 
 // контроллеры и роуты для карточек
 const {
@@ -20,7 +21,7 @@ router.delete('/:cardId', celebrate({
 router.post('/', celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    link: Joi.string().required().pattern(/https?:\/\/(www.)?[a-z0-9][a-z0-9-]+\.[a-z]{2,6}[0-9a-z\-._~:/[\]@!$'()*+,;=]*#?$/),
+    link: Joi.string().required().pattern(regExUrl),
   }),
 }), createCard); // создаёт карточку
 

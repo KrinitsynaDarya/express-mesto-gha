@@ -4,10 +4,10 @@ const cookieParser = require('cookie-parser');
 const { errors, Joi, celebrate } = require('celebrate');
 
 const auth = require('./middlewares/auth');
-
+const { regExUrl } = require('./utils/constants');
 const {
   HTTP_STATUS_NOT_FOUND,
-} = require('./utils/codes');
+} = require('./utils/constants');
 const {
   login,
   createUser,
@@ -38,7 +38,7 @@ app.post('/signup', celebrate({
     password: Joi.string().required(),
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().pattern(/https?:\/\/(www.)?[a-z0-9][a-z0-9-]+\.[a-z]{2,6}[0-9a-z\-._~:/[\]@!$'()*+,;=]*#?$/),
+    avatar: Joi.string().pattern(regExUrl),
   }),
 }), createUser);
 
