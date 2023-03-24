@@ -6,14 +6,12 @@ const { errors, Joi, celebrate } = require('celebrate');
 
 const auth = require('./middlewares/auth');
 const { regExUrl } = require('./utils/constants');
-const {
-  HTTP_STATUS_NOT_FOUND,
-} = require('./utils/constants');
+
 const {
   login,
   createUser,
 } = require('./controllers/users');
-
+const NotFoundError = require('./errors/not-found-err');
 // Слушаем 3000 порт
 const { PORT = 3000 } = process.env;
 
@@ -49,8 +47,8 @@ app.use(auth);
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
-app.use((req, res) => {
-  res.status(HTTP_STATUS_NOT_FOUND).send({ message: 'Запрашиваемая страница не найдена' });
+app.use((req, res, next) => {
+  next(new NotFoundError('Запрашиваемая страница не найдена'));
 });
 
 // обработчики ошибок
