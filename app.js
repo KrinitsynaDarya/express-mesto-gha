@@ -58,7 +58,6 @@ app.use(errors()); // обработчик ошибок celebrate
 
 // наш централизованный обработчик
 app.use((err, req, res, next) => {
-  // res.status(err.statusCode).send({ message: err.message });
   // если у ошибки нет статуса, выставляем 500
   const { statusCode = 500, message } = err;
 
