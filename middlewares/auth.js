@@ -14,7 +14,6 @@ module.exports = (req, res, next) => {
   } catch (err) {
     // отправим ошибку, если не получилось
     next(new UnauthorizedError('Необходима авторизация'));
-    // res.status(HTTP_STATUS_UNAUTHORIZED).send({ message: 'Необходима авторизация' });
   }
 
   req.user = payload; // записываем пейлоуд в объект запроса

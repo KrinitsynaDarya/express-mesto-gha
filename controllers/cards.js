@@ -22,17 +22,13 @@ module.exports.createCardOld = (req, res, next) => {
         .then((card) => { res.status(HTTP_STATUS_CREATED).send({ data: card }); })
         .catch(() => {
           next(new InternalServerError('Произошла ошибка'));
-          // res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
         });
     })
   // данные не записались, вернём ошибку
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        // res.status(HTTP_STATUS_BAD_REQUEST)
-        // .send({ message: 'Переданы некорректные данные при создании карточки' });
         next(new BadRequestError('Переданы некорректные данные при создании карточки'));
       } else { next(new InternalServerError('Произошла ошибка')); }
-      // res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
     });
 };
 
@@ -47,11 +43,8 @@ module.exports.createCard = async (req, res, next) => {
     res.status(HTTP_STATUS_CREATED).send({ data: card });
   } catch (err) {
     if (err.name === 'ValidationError') {
-      // res.status(HTTP_STATUS_BAD_REQUEST)
-      // .send({ message: 'Переданы некорректные данные при создании карточки' });
       next(new BadRequestError('Переданы некорректные данные при создании карточки'));
     } else { next(new InternalServerError('Произошла ошибка')); }
-    // res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
   }
 };
 
@@ -61,7 +54,6 @@ module.exports.getCards = (req, res, next) => {
     .populate(['owner', 'likes'])
     .then((cards) => res.send(cards))
     .catch(() => { next(new InternalServerError('Произошла ошибка')); });
-  // res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' })
 };
 
 module.exports.deleteCardById = (req, res, next) => {
@@ -70,27 +62,18 @@ module.exports.deleteCardById = (req, res, next) => {
     .orFail()
     .then((card) => {
       if (req.user._id.toString() !== card.owner._id.toString()) {
-        // res.status(HTTP_STATUS_FORBIDDEN)
-        // .send({ message: 'Карточка с указанным _id не принадлежит текущему пользователю' });
         next(new ForbiddenError('Карточка с указанным _id не принадлежит текущему пользователю'));
-        // return;
       }
       card.remove()
         .then(() => res.send({ data: card }));
     })
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
-        // res.status(HTTP_STATUS_NOT_FOUND)
-        // .send({ message: 'Карточка с указанным _id не найдена' });
         next(new NotFoundError('Карточка с указанным _id не найдена'));
-        // return;
       }
       if (err.name === 'CastError') {
-        // res.status(HTTP_STATUS_BAD_REQUEST)
-        // .send({ message: 'Передан некорректный _id при поиске карточки' });
         next(new BadRequestError('Передан некорректный _id при поиске карточки'));
       } else { next(new InternalServerError('Произошла ошибка')); }
-      // res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
     });
 };
 
@@ -102,16 +85,10 @@ module.exports.addCardLike = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
         next(new NotFoundError('Передан несуществующий _id карточки'));
-        // res.status(HTTP_STATUS_NOT_FOUND)
-        // .send({ message: 'Передан несуществующий _id карточки' });
-        // return;
       }
       if (err.name === 'CastError') {
-        // res.status(HTTP_STATUS_BAD_REQUEST)
-        // .send({ message: 'Передан некорректный _id при поиске карточки' });
         next(new BadRequestError('Передан некорректный _id при поиске карточки'));
       } else { next(new InternalServerError('Произошла ошибка')); }
-      // res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
     });
 };
 
@@ -123,15 +100,9 @@ module.exports.removeCardLike = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
         next(new NotFoundError('Передан несуществующий _id карточки'));
-        // res.status(HTTP_STATUS_NOT_FOUND)
-        // .send({ message: 'Передан несуществующий _id карточки' });
-        // return;
       }
       if (err.name === 'CastError') {
-        // res.status(HTTP_STATUS_BAD_REQUEST)
-        // .send({ message: 'Передан некорректный _id при поиске карточки' });
         next(new BadRequestError('Передан некорректный _id при поиске карточки'));
       } else { next(new InternalServerError('Произошла ошибка')); }
-      // res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
     });
 };

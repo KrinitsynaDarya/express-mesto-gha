@@ -19,7 +19,6 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '7d' });
       // вернём токен
-      // res.send({ token });
       res
         .cookie('jwt', token, {
           // token - наш JWT токен, который мы отправляем
@@ -30,7 +29,6 @@ module.exports.login = (req, res, next) => {
         .send({ token });
     })
     .catch((err) => {
-      // res.status(HTTP_STATUS_UNAUTHORIZED).send({ message: err.message });
       next(new UnauthorizedError(err.message));
     });
 };
@@ -50,17 +48,11 @@ module.exports.createUser = (req, res, next) => {
   // данные не записались, вернём ошибку
     .catch((err) => {
       if (err.code === 11000) {
-        // res.status(HTTP_STATUS_CONFLICT)
-        // .send({ message: 'Пользователь с данным email уже существует' });
         next(new ConflictError('Пользователь с данным email уже существует'));
-        // return;
       }
       if (err.name === 'ValidationError') {
-        // res.status(HTTP_STATUS_BAD_REQUEST)
-        // .send({ message: 'Переданы некорректные данные при создании пользователя' });
         next(new BadRequestError('Переданы некорректные данные при создании пользователя'));
       } else { next(new InternalServerError('Произошла ошибка')); }
-      // res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
     });
 };
 
@@ -70,18 +62,11 @@ module.exports.getUserById = (req, res, next) => {
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
-        // res.status(HTTP_STATUS_NOT_FOUND)
-        // .send({ message: 'Пользователь по указанному _id не найден' });
         next(new NotFoundError('Пользователь по указанному _id не найден'));
-        // return;
       }
       if (err.name === 'CastError') {
-        // res.status(HTTP_STATUS_BAD_REQUEST).send(
-        // { message: 'Передан некорректный _id при поиске пользователя' },
-        // );
         next(new BadRequestError('Передан некорректный _id при поиске пользователя'));
       } else { next(new InternalServerError('Произошла ошибка')); }
-      // res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
     });
 };
 
@@ -91,7 +76,6 @@ module.exports.getUsers = (req, res, next) => {
     .then((users) => res.send(users))
     .catch(() => {
       next(new InternalServerError('Произошла ошибка'));
-      // res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
     });
 };
 
@@ -103,17 +87,11 @@ module.exports.updateUser = (req, res, next) => {
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
-        // res.status(HTTP_STATUS_NOT_FOUND)
-        // .send({ message: 'Пользователь по указанному _id не найден' });
         next(new NotFoundError('Пользователь по указанному _id не найден'));
-        // return;
       }
       if (err.name === 'ValidationError') {
-        // res.status(HTTP_STATUS_BAD_REQUEST)
-        // .send({ message: 'Переданы некорректные данные при обновлении профиля' });
         next(new BadRequestError('Переданы некорректные данные при обновлении профиля'));
       } else { next(new InternalServerError('Произошла ошибка')); }
-      // res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
     });
 };
 
@@ -125,36 +103,24 @@ module.exports.updateUserAvatar = (req, res, next) => {
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
-        // res.status(HTTP_STATUS_NOT_FOUND)
-        // .send({ message: 'Пользователь по указанному _id не найден' });
         next(new NotFoundError('Пользователь по указанному _id не найден'));
-        // return;
       }
       if (err.name === 'ValidationError') {
-        // res.status(HTTP_STATUS_BAD_REQUEST)
-        // .send({ message: 'Переданы некорректные данные при обновлении аватара' });
         next(new BadRequestError('Переданы некорректные данные при обновлении аватара'));
       } else { next(new InternalServerError('Произошла ошибка')); }
-      // res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
     });
 };
 
 module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
-    .orFail(/* оставляем как есть */)
+    .orFail()
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
-        // res.status(HTTP_STATUS_NOT_FOUND)
-        // .send({ message: 'Пользователь по указанному _id не найден' });
         next(new NotFoundError('Пользователь по указанному _id не найден'));
-        // return;
       }
       if (err.name === 'CastError') {
-        // res.status(HTTP_STATUS_BAD_REQUEST)
-        // .send({ message: 'Передан некорректный _id при поиске пользователя' });
         next(new BadRequestError('Передан некорректный _id при поиске пользователя'));
       } else { next(new InternalServerError('Произошла ошибка')); }
-      // res.status(HTTP_STATUS_INTERNAL_SERVER_ERROR).send({ message: 'Произошла ошибка' });
     });
 };
