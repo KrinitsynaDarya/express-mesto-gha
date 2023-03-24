@@ -2,15 +2,9 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
-const { errors, Joi, celebrate } = require('celebrate');
-
+const { errors } = require('celebrate');
 const auth = require('./middlewares/auth');
-const { regExUrl } = require('./utils/constants');
 
-const {
-  login,
-  createUser,
-} = require('./controllers/users');
 const NotFoundError = require('./errors/not-found-err');
 // Слушаем 3000 порт
 const { PORT = 3000 } = process.env;
@@ -25,21 +19,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
   autoIndex: true,
 });
 
-app.post('/signin', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-  }),
-}), login);
-app.post('/signup', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi.string().pattern(regExUrl),
-  }),
-}), createUser);
+app.use('/', require('./routes/auth'));
 
 app.use(auth);
 

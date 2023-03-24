@@ -18,7 +18,7 @@ module.exports.createCardOld = (req, res, next) => {
   Card.create({ name, link, owner })
   // вернём записанные в базу данные
     .then((data) => {
-      data.populate(['owner', 'likes'])
+      data.populate('owner')
         .then((card) => { res.status(HTTP_STATUS_CREATED).send({ data: card }); })
         .catch(() => {
           next(new InternalServerError('Произошла ошибка'));
@@ -38,7 +38,7 @@ module.exports.createCard = async (req, res, next) => {
   const owner = req.user._id;
   try {
     const data = await Card.create({ name, link, owner });
-    const card = await data.populate(['owner', 'likes']);
+    const card = await data.populate('owner');
 
     res.status(HTTP_STATUS_CREATED).send({ data: card });
   } catch (err) {
@@ -63,15 +63,16 @@ module.exports.deleteCardById = (req, res, next) => {
     .then((card) => {
       if (req.user._id.toString() !== card.owner._id.toString()) {
         next(new ForbiddenError('Карточка с указанным _id не принадлежит текущему пользователю'));
+      } else {
+        card.remove()
+          .then(() => res.send({ data: card }))
+          .catch(next);
       }
-      card.remove()
-        .then(() => res.send({ data: card }));
     })
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
         next(new NotFoundError('Карточка с указанным _id не найдена'));
-      }
-      if (err.name === 'CastError') {
+      } else if (err.name === 'CastError') {
         next(new BadRequestError('Передан некорректный _id при поиске карточки'));
       } else { next(new InternalServerError('Произошла ошибка')); }
     });
@@ -85,8 +86,7 @@ module.exports.addCardLike = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
         next(new NotFoundError('Передан несуществующий _id карточки'));
-      }
-      if (err.name === 'CastError') {
+      } else if (err.name === 'CastError') {
         next(new BadRequestError('Передан некорректный _id при поиске карточки'));
       } else { next(new InternalServerError('Произошла ошибка')); }
     });
@@ -100,8 +100,7 @@ module.exports.removeCardLike = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
         next(new NotFoundError('Передан несуществующий _id карточки'));
-      }
-      if (err.name === 'CastError') {
+      } else if (err.name === 'CastError') {
         next(new BadRequestError('Передан некорректный _id при поиске карточки'));
       } else { next(new InternalServerError('Произошла ошибка')); }
     });
