@@ -61,7 +61,7 @@ userSchema.statics.findUserByCredentials = function (email, password) {
     });
 };
 
-userSchema.methods.ToJSON = function () {
+userSchema.methods.clean = function () {
   const data = this.toObject();
 
   delete data.password;
