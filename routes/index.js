@@ -11,6 +11,7 @@ router.use(auth);
 router.use('/users', require('./users'));
 router.use('/cards', require('./cards'));
 
+/* 20. необходимо обрабатывать все ошибки централизованно через обработчик */
 router.use((req, res, next) => {
   next(new NotFoundError('Запрашиваемая страница не найдена'));
 });

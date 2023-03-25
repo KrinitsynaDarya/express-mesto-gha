@@ -27,7 +27,7 @@ module.exports.login = (req, res, next) => {
         })
         .send({ token });
     })
-    .catch(next);
+    .catch(next);/* 6. убрали избыточный обработчик */
 };
 
 module.exports.createUser = (req, res, next) => {
@@ -46,7 +46,7 @@ module.exports.createUser = (req, res, next) => {
     .catch((err) => {
       if (err.code === 11000) {
         next(new ConflictError('Пользователь с данным email уже существует'));
-      } else if (err.name === 'ValidationError') {
+      } /* 7. чтобы код дальше не выполнялся, ставим else */else if (err.name === 'ValidationError') {
         next(new BadRequestError(err.message));
       } else { next(new InternalServerError('Произошла ошибка')); }
     });
@@ -59,7 +59,7 @@ module.exports.getUserById = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
         next(new NotFoundError('Пользователь по указанному _id не найден'));
-      } else if (err.name === 'CastError') {
+      } /* 8. чтобы код дальше не выполнялся, ставим else */else if (err.name === 'CastError') {
         next(new BadRequestError('Передан некорректный _id при поиске пользователя'));
       } else { next(new InternalServerError('Произошла ошибка')); }
     });
@@ -83,7 +83,7 @@ module.exports.updateUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
         next(new NotFoundError('Пользователь по указанному _id не найден'));
-      } else if (err.name === 'ValidationError') {
+      } /* 9. чтобы код дальше не выполнялся, ставим else */else if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы некорректные данные при обновлении профиля'));
       } else { next(new InternalServerError('Произошла ошибка')); }
     });
@@ -98,7 +98,7 @@ module.exports.updateUserAvatar = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
         next(new NotFoundError('Пользователь по указанному _id не найден'));
-      } else if (err.name === 'ValidationError') {
+      } /* 10. чтобы код дальше не выполнялся, ставим else */else if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы некорректные данные при обновлении аватара'));
       } else { next(new InternalServerError('Произошла ошибка')); }
     });
@@ -111,7 +111,7 @@ module.exports.getCurrentUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
         next(new NotFoundError('Пользователь по указанному _id не найден'));
-      } else if (err.name === 'CastError') {
+      } /* 11. чтобы код дальше не выполнялся, ставим else */else if (err.name === 'CastError') {
         next(new BadRequestError('Передан некорректный _id при поиске пользователя'));
       } else { next(new InternalServerError('Произошла ошибка')); }
     });

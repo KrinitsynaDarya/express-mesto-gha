@@ -15,6 +15,7 @@ router.get('/', getCards); // возвращает все карточки
 router.delete('/:cardId', celebrate({
   // валидируем параметры
   params: Joi.object().keys({
+    /* 15.  Id валидируем как hex последовательность длиной 24 символа */
     cardId: Joi.string().length(24).hex().required(),
   }),
 }), deleteCardById); // удаляет карточку по идентификатору
@@ -28,12 +29,14 @@ router.post('/', celebrate({
 router.put('/:cardId/likes', celebrate({
   // валидируем параметры
   params: Joi.object().keys({
+    /* 16. Id валидируем как hex последовательность длиной 24 символа */
     cardId: Joi.string().length(24).hex().required(),
   }),
 }), addCardLike); // поставить лайк карточке
 router.delete('/:cardId/likes', celebrate({
   // валидируем параметры
   params: Joi.object().keys({
+    /* 17. Id валидируем как hex последовательность длиной 24 символа */
     cardId: Joi.string().length(24).hex().required(),
   }),
 }), removeCardLike); // убрать лайк с карточки

@@ -12,6 +12,7 @@ const cardSchema = new mongoose.Schema({
   link: {
     type: String,
     required: true,
+    /* 12. Валидируем ссылку */
     validate: {
       validator: (value) => validator.isURL(value),
       message: 'Невалидный URL',

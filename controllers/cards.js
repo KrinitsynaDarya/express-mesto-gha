@@ -63,16 +63,16 @@ module.exports.deleteCardById = (req, res, next) => {
     .then((card) => {
       if (req.user._id.toString() !== card.owner._id.toString()) {
         next(new ForbiddenError('Карточка с указанным _id не принадлежит текущему пользователю'));
-      } else {
+      } /* 1. чтобы код дальше не выполнялся, ставим else */else {
         card.remove()
           .then(() => res.send({ data: card }))
-          .catch(next);
+          .catch(next); /* 2. добавили обработчик ошибок */
       }
     })
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
         next(new NotFoundError('Карточка с указанным _id не найдена'));
-      } else if (err.name === 'CastError') {
+      } /* 3. чтобы код дальше не выполнялся, ставим else */ else if (err.name === 'CastError') {
         next(new BadRequestError('Передан некорректный _id при поиске карточки'));
       } else { next(new InternalServerError('Произошла ошибка')); }
     });
@@ -86,7 +86,7 @@ module.exports.addCardLike = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
         next(new NotFoundError('Передан несуществующий _id карточки'));
-      } else if (err.name === 'CastError') {
+      } /* 4. чтобы код дальше не выполнялся, ставим else */else if (err.name === 'CastError') {
         next(new BadRequestError('Передан некорректный _id при поиске карточки'));
       } else { next(new InternalServerError('Произошла ошибка')); }
     });
@@ -100,7 +100,7 @@ module.exports.removeCardLike = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
         next(new NotFoundError('Передан несуществующий _id карточки'));
-      } else if (err.name === 'CastError') {
+      } /* 5. чтобы код дальше не выполнялся, ставим else */else if (err.name === 'CastError') {
         next(new BadRequestError('Передан некорректный _id при поиске карточки'));
       } else { next(new InternalServerError('Произошла ошибка')); }
     });

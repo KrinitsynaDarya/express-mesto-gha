@@ -16,6 +16,7 @@ router.get('/me', getCurrentUser); // возвращает текущего по
 router.get('/:userId', celebrate({
   // валидируем параметры
   params: Joi.object().keys({
+    /* 18. Id валидируем как hex последовательность длиной 24 символа */
     userId: Joi.string().length(24).hex().required(),
   }),
 }), getUserById); // возвращает пользователя по _id
