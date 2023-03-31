@@ -3,9 +3,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
-const auth = require('./middlewares/auth');
+const routes = require('./routes/index');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const NotFoundError = require('./errors/not-found-err');
 // Слушаем 3000 порт
 const { PORT = 3000 } = process.env;
 
@@ -19,17 +19,9 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
   autoIndex: true,
 });
 
-app.use('/', require('./routes/auth'));
-
-app.use(auth);
-
-// роуты, которым авторизация нужна
-app.use('/users', require('./routes/users'));
-app.use('/cards', require('./routes/cards'));
-
-app.use((req, res, next) => {
-  next(new NotFoundError('Запрашиваемая страница не найдена'));
-});
+app.use(requestLogger); // подключаем логгер запросов
+app.use(routes);
+app.use(errorLogger); // подключаем логгер ошибок
 
 // обработчики ошибок
 app.use(errors()); // обработчик ошибок celebrate

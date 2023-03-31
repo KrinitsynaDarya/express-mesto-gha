@@ -16,3 +16,6 @@ node_modules
 .DS_Store
 .idea
 .vscode
+
+# Все файлы с расширением log невидимы для git
+*.log
